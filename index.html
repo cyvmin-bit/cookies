@@ -1,46 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RinErin Cookies</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SweetSpot Cookies</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <header class="container">
-    <a href="index.html" class="logo">RinErin Cookies</a>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="product.html">Products</a>
-      <a href="cart.html">Cart</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
+<header class="topnav">
+  <a class="logo" href="#" onclick="showPanel('home')">SweetSpot Cookies</a>
+  <nav>
+    <a onclick="showPanel('home')">Home</a>
+    <a onclick="showPanel('products')">Products</a>
+    <a onclick="showPanel('cart')">Cart</a>
+    <a onclick="showPanel('admin')">Admin</a>
+  </nav>
+</header>
 
-  <div class="container">
-    <section class="hero">
-      <img src="hero-photo.jpg" class="hero-img">
+<div class="container">
 
-      <div>
-        <h1>Fresh Homemade Cookies</h1>
-        <p>Discover our delicious handmade cookies baked fresh every day.  
-           Browse our best-selling treats and order easily from home.</p>
+  <!-- ============= HOME PANEL ============= -->
+  <section id="home" class="panel">
+    <div class="hero">
+      <div class="left">
+        <h1>Homemade Cookies & Treats — Freshly Baked</h1>
+        <p>Order from our selection of 8 signature cookie packs — perfect for gifts, events, or a sweet treat at home.</p>
+        <button class="btn" onclick="showPanel('products')">Shop Now</button>
+      </div>
 
-        <div class="cta">
-          <a href="product.html">
-            <button class="btn">Shop Now</button>
-          </a>
+      <div class="right hero-bg"></div>
+    </div>
+  </section>
+
+  <!-- ============= PRODUCTS PANEL ============= -->
+  <section id="products" class="panel hidden">
+    <h2>Our Products</h2>
+    <div class="grid" id="product-grid"></div>
+
+    <div id="detail-area" style="display:none;margin-top:20px">
+      <a onclick="hideDetail()" class="back-link">← Back to Products</a>
+      <div id="product-detail" class="detail"></div>
+    </div>
+  </section>
+
+  <!-- ============= CART PANEL ============= -->
+  <section id="cart" class="panel hidden">
+    <h2>Your Cart</h2>
+    <div id="cart-list"></div>
+    <button class="btn" onclick="goToCheckout()">Proceed to Checkout</button>
+
+    <div id="checkout" class="hidden" style="margin-top:20px">
+      <h3>Checkout</h3>
+
+      <div class="checkout-box">
+        <form id="checkout-form">
+          <label>Full name</label>
+          <input name="name" required>
+
+          <label>Phone</label>
+          <input name="phone" required>
+
+          <label>Address</label>
+          <textarea name="address" rows="3" required></textarea>
+        </form>
+
+        <div class="summary">
+          <h4>Order Summary</h4>
+          <div id="order-summary"></div>
+          <button class="btn" onclick="simulatePayment()">Simulate Payment</button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer>
-      <p class="muted">© 2025 RinErin Cookies</p>
-    </footer>
-  </div>
+  <!-- ============= ADMIN PANEL ============= -->
+  <section id="admin" class="panel hidden">
+    <h2>Admin Panel</h2>
 
-  <script src="script.js"></script>
+    <div class="admin-box">
+      <form id="admin-add-form">
+        <label>Product name</label>
+        <input name="name" required>
+
+        <label>Price (RM)</label>
+        <input name="price" type="number" required>
+
+        <label>Quantity (pcs)</label>
+        <input name="qty" type="number" value="20">
+
+        <label>Description</label>
+        <textarea name="desc"></textarea>
+
+        <label>Image filename</label>
+        <input name="img">
+
+        <button class="btn" type="submit">Add Product</button>
+      </form>
+
+      <div id="orders-list" class="orders">No orders yet</div>
+    </div>
+  </section>
+
+  <footer>Demo prototype • Contact: 016-2220482</footer>
+
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
