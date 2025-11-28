@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — My Cookies Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .user-type-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .user-type-btn {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #efe6e1;
+      background: white;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .user-type-btn.active {
+      background: #a65b2a;
+      color: white;
+      border-color: #a65b2a;
+    }
+    .login-form {
+      margin-top: 20px;
+    }
+    .admin-fields {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <a class="logo" href="index.html">SweetSpot Cookies</a>
+    <nav>
+      <a href="index.html">Back to Shop</a>
+    </nav>
+  </header>
+
+  <div class="login-container">
+    <h2 style="text-align:center;margin-bottom:20px;color:#2e2119">Login</h2>
+    
+    <div class="user-type-buttons">
+      <button class="user-type-btn active" onclick="switchUserType('customer')">Customer</button>
+      <button class="user-type-btn" onclick="switchUserType('admin')">Admin</button>
+    </div>
+    
+    <div class="login-form">
+      <div id="customer-section">
+        <p style="text-align:center;color:#6b5f59;margin-bottom:20px">
+          Click below to continue as customer
+        </p>
+        <button class="btn" style="width:100%" onclick="loginAsCustomer()">
+          Continue as Customer
+        </button>
+      </div>
+      
+      <div id="admin-section" class="admin-fields">
+        <form id="admin-login-form">
+          <label>Admin Email</label>
+          <input name="email" type="email" required>
+          <label>Admin Password</label>
+          <input name="password" type="password" required>
+          <div style="margin-top:16px">
+            <button class="btn" type="submit" style="width:100%">Admin Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchUserType(type) {
+    const customerBtn = document.querySelector('.user-type-btn:nth-child(1)');
+    const adminBtn = document.querySelector('.user-type-btn:nth-child(2)');
+    const customerSection = document.getElementById('customer-section');
+    const adminSection = document.getElementById('admin-section');
+    
+    if (type === 'customer') {
+      customerBtn.classList.add('active');
+      adminBtn.classList.remove('active');
+      customerSection.style.display = 'block';
+      adminSection.style.display = 'none';
+    } else {
+      customerBtn.classList.remove('active');
+      adminBtn.classList.add('active');
+      customerSection.style.display = 'none';
+      adminSection.style.display = 'block';
+    }
+  }
+
+  function loginAsCustomer() {
+    localStorage.setItem('user', JSON.stringify({ 
+      type: 'customer', 
+      loggedIn: true 
+    }));
+    window.location.href = 'index.html';
+  }
+
+  document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const email = formData.get('email');
+    const password = formData.get('password');
+    
+    // Fixed admin credentials
+    if (email === 'admin@cookieshop.com' && password === 'admin123') {
+      localStorage.setItem('user', JSON.stringify({ 
+        type: 'admin', 
+        loggedIn: true,
+        email: email
+      }));
+      window.location.href = 'index.html';
+    } else {
+      alert('Invalid admin credentials. Use:\nEmail: admin@cookieshop.com\nPassword: admin123');
+    }
+  });
+</script>
+</body>
+</html>
