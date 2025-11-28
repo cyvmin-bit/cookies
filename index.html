@@ -1,145 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>RinErin Cookies — Prototype</title>
-
-  <!-- LINK CSS -->
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RinErin Cookies</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-<div class="container">
+  <!-- Navigation -->
   <header>
-    <a class="logo" href="#">RinErin Cookies</a>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#products">Products</a>
-      <a href="#cart">Cart</a>
-      <a href="#admin">Admin</a>
+    <nav class="navbar">
+      <h1 class="logo">RinErin Cookies</h1>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#products">Cookies</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="left">
-      <h1>Homemade Cookies & Treats — Freshly Baked</h1>
-      <p>Order from our selection of 8 signature cookie packs — perfect for gifts, events, or a sweet treat at home.</p>
-      <div class="cta">
-        <button class="btn" onclick="scrollToSection('products')">Shop Now</button>
-      </div>
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h2>Freshly Baked Happiness</h2>
+      <p>Crunchy, chewy, and made with love — just for you.</p>
+      <a href="#products" class="btn">Explore Cookies</a>
     </div>
-
-    <div class="right" style="width:360px;">
-      <img src="hero-photo.jpg" alt="Hero Image" class="hero-img">
-      <div class="muted" style="margin-top:8px;text-align:center">Hero Image</div>
-    </div>
+    <img src="hero-photo.jpg" class="hero-img">
   </section>
 
-  <!-- PRODUCTS -->
-  <section id="products" style="margin-top:20px">
-    <h2>Our Products</h2>
-    <div class="grid" id="product-grid"></div>
-  </section>
+  <!-- Product Section -->
+  <section id="products" class="products">
+    <h2>Our Best Sellers</h2>
 
-  <!-- PRODUCT DETAIL -->
-  <section id="detail-area" style="display:none;margin-top:20px">
-    <a href="#products" class="back-link">← Back to products</a>
-    <div id="product-detail" class="detail"></div>
-  </section>
-
-  <!-- CART -->
-  <section id="cart" style="margin-top:20px">
-    <h2>Your Cart</h2>
-    <div id="cart-list"></div>
-    <div style="margin-top:12px">
-      <button class="btn" onclick="goToCheckout()">Proceed to Checkout</button>
-    </div>
-  </section>
-
-  <!-- CHECKOUT -->
-  <section id="checkout" style="display:none;margin-top:20px">
-    <h2>Checkout</h2>
-    <div class="checkout-wrap">
-      <div class="checkout-left">
-        <form id="checkout-form">
-          <label>Full name</label>
-          <input name="name" required>
-
-          <label>Phone</label>
-          <input name="phone" required>
-
-          <label>Address</label>
-          <textarea name="address" rows="3" required></textarea>
-        </form>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="cookie1.jpg" />
+        <h3>Chocolate Chip</h3>
+        <p>Chewy, sweet, and full of chocolate chunks.</p>
       </div>
 
-      <div class="checkout-right">
-        <h4>Order summary</h4>
-        <div id="order-summary"></div>
-        <div style="margin-top:12px"><button class="btn" onclick="simulatePayment()">Simulate Payment</button></div>
+      <div class="product-card">
+        <img src="cookie2.jpg" />
+        <h3>Matcha Green Tea</h3>
+        <p>A unique taste with premium Japanese matcha.</p>
+      </div>
+
+      <div class="product-card">
+        <img src="cookie3.jpg" />
+        <h3>Red Velvet</h3>
+        <p>Soft, buttery, and topped with white choco chips.</p>
       </div>
     </div>
   </section>
 
-  <!-- ADMIN -->
-  <section id="admin" style="margin-top:20px">
-    <h2>Admin Panel</h2>
-    <div class="admin-wrap">
+  <!-- About -->
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>
+      RinErin Cookies is a small homemade bakery that focuses on delivering
+      freshly baked cookies made with quality ingredients. Every batch is
+      created with care to ensure only the best flavor in every bite.
+    </p>
+  </section>
 
-      <aside class="admin-side">
-        <div class="admin-title">Admin</div>
-        <div class="muted">Client-side demo</div>
-        <hr class="divider">
-        <nav class="admin-nav">
-          <a href="#add">Add product</a>
-          <a href="#orders">Orders</a>
-        </nav>
-      </aside>
-
-      <div class="admin-main">
-
-        <div id="add" class="admin-box">
-          <h3>Add Product</h3>
-          <form id="admin-add-form">
-            <label>Product name</label>
-            <input name="name" required>
-
-            <label>Price (RM)</label>
-            <input name="price" type="number" step="0.01" required>
-
-            <label>Quantity (pcs)</label>
-            <input name="qty" type="number" value="30">
-
-            <label>Description</label>
-            <textarea name="desc" rows="3"></textarea>
-
-            <label>Image filename</label>
-            <input name="img" placeholder="example: cookies1.jpg">
-
-            <div style="margin-top:10px">
-              <button class="btn" type="submit">Add</button>
-            </div>
-          </form>
-        </div>
-
-        <div id="orders" class="admin-box" style="margin-top:12px">
-          <h3>Orders</h3>
-          <div id="orders-list" class="muted">No orders yet</div>
-        </div>
-
-      </div>
-    </div>
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Get In Touch</h2>
+    <p>For orders, DM us on Instagram:</p>
+    <a href="https://instagram.com" class="btn">Message Us</a>
   </section>
 
   <footer>
-    Demo prototype • Contact: 016-2220482
+    <p>© 2024 RinErin Cookies • Homemade with Love</p>
   </footer>
-</div>
-
-<!-- LINK JS -->
-<script src="script.js"></script>
-
 </body>
 </html>
