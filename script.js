@@ -1,6 +1,6 @@
-// ===============================
-// PRODUCT DATA
-// ===============================
+/* -------------------------------------------------
+   PRODUCT DATA
+--------------------------------------------------*/
 const products = [
   { id:1, slug:"biskut-mazola", name:"Biskut Mazola", price:25, qty:25, desc:"Traditional Biskut Mazola — crunchy and rich.", img:"Biskut Mazola.jpg" },
   { id:2, slug:"cornflakes-cookies", name:"Cornflakes Cookies", price:25, qty:33, desc:"Crunchy and sweet.", img:"Cornflakes Cookies.jpg" },
@@ -12,239 +12,293 @@ const products = [
   { id:8, slug:"bright-eyed-susan", name:"Bright Eyed Susan", price:25, qty:20, desc:"Unique and buttery.", img:"Bright Eyed Susan.jpg" }
 ];
 
-
-// ===============================
-// SMOOTH SCROLL
-// ===============================
+/* -------------------------------------------------
+   SCROLL
+--------------------------------------------------*/
 function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({ behavior:'smooth' });
+  const target = document.getElementById(id);
+  if (target) target.scrollIntoView({ behavior: "smooth" });
 }
 
-
-// ===============================
-// RENDER PRODUCTS (with fade-in animation + img fallback)
-// ===============================
+/* -------------------------------------------------
+   PRODUCT RENDERING (Products Page Only)
+--------------------------------------------------*/
 function renderProducts(){
-  const grid = document.getElementById('product-grid');
+  const grid = document.getElementById("product-grid");
+  if (!grid) return; // Page doesn't have product grid
 
-  grid.innerHTML = products.map(p => `
-    <div class="card fade-in">
-      <img class="thumb" src="${p.img}" alt="${p.name}"
-        onerror="this.src='default.jpg'">
-      <div class="card-body">
-        <div class="card-title">${p.name}</div>
-        <div class="price">RM ${p.price.toFixed(2)}</div>
-        <div class="meta">(${p.qty} pcs)</div>
-        <div style="margin-top:8px">
-          <button class="pill" onclick="viewProduct(${p.id})">View</button>
-          <button class="pill" onclick="addToCart(${p.id})">Add</button>
+  grid.innerHTML = products
+    .map(
+      p => `
+        <div class="card fade-in">
+          <img class="thumb" src="${p.img}" alt="${p.name}">
+          <div class="card-body">
+            <div class="card-title">${p.name}</div>
+            <div class="price">RM ${p.price.toFixed(2)}</div>
+            <div class="meta">(${p.qty} pcs)</div>
+
+            <div style="margin-top:8px">
+              <button class="pill" onclick="viewProduct(${p.id})">View</button>
+              <button class="pill" onclick="addToCart(${p.id})">Add</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  `).join('');
+      `
+    )
+    .join("");
 }
 
-
-// ===============================
-// PRODUCT DETAIL
-// ===============================
+/* -------------------------------------------------
+   PRODUCT DETAILS (Products Page Only)
+--------------------------------------------------*/
 function viewProduct(id){
+  const box = document.getElementById("detail-area");
+  const area = document.getElementById("product-detail");
+  if (!box || !area) return;
+
   const p = products.find(x => x.id === id);
-  const detail = document.getElementById('detail-area');
+  box.style.display = "block";
 
-  detail.style.display = 'block';
-  detail.scrollIntoView({ behavior: "smooth" });
-
-  document.getElementById('product-detail').innerHTML = `
-    <div class="left">
-      <img src="${p.img}" 
-           onerror="this.src='default.jpg'"
-           style="width:100%;border-radius:10px;height:360px;object-fit:cover">
+  area.innerHTML = `
+    <div class="left fade-in">
+      <img src="${p.img}" style="width:100%;border-radius:10px;height:360px;object-fit:cover">
       <h2 style="margin-top:12px">${p.name}</h2>
       <p class="muted" style="margin-top:8px">${p.desc}</p>
     </div>
-    <div class="right">
+
+    <div class="right fade-in">
       <div style="font-size:1.2rem;font-weight:800">RM ${p.price.toFixed(2)}</div>
       <div class="muted">(${p.qty} pcs)</div>
-      <div style="margin-top:12px"><button class="btn" onclick="addToCart(${p.id})">Add to cart</button></div>
-    </div>`;
+
+      <div style="margin-top:12px">
+        <button class="btn" onclick="addToCart(${p.id})">Add to cart</button>
+      </div>
+    </div>
+  `;
 }
 
-
-// ===============================
-// CART FUNCTIONS
-// ===============================
-function getCart(){ return JSON.parse(localStorage.getItem('cart') || '[]'); }
-function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
-
-function updateCartBadge(){
-  const badge = document.getElementById("cart-count");
-  const count = getCart().reduce((a,b)=>a+b.qty,0);
-  if(badge) badge.innerText = count;
+/* -------------------------------------------------
+   CART STORAGE CONTROL
+--------------------------------------------------*/
+function getCart(){
+  return JSON.parse(localStorage.getItem("cart") || "[]");
 }
 
+function saveCart(c){
+  localStorage.setItem("cart", JSON.stringify(c));
+}
+
+/* -------------------------------------------------
+   ADD TO CART
+--------------------------------------------------*/
 function addToCart(id){
-  const p = products.find(x => x.id === id);
-  const c = getCart();
-  const ex = c.find(i => i.id === id);
+  const product = products.find(p => p.id === id);
+  const cart = getCart();
+  const existing = cart.find(x => x.id === id);
 
-  if(ex) ex.qty++;
-  else c.push({...p, qty: 1});
+  if (existing) existing.qty++;
+  else cart.push({ ...product, qty: 1 });
 
-  saveCart(c);
-  updateCartBadge();
+  saveCart(cart);
   renderCart();
-
-  // prettier alert UI
-  showToast(`${p.name} added to cart`);
+  showToast("Added to cart");
 }
 
+/* -------------------------------------------------
+   CART PAGE
+--------------------------------------------------*/
 function renderCart(){
-  const c = getCart();
-  const el = document.getElementById('cart-list');
+  const list = document.getElementById("cart-list");
+  if (!list) return; // Not on cart page
 
-  if(c.length === 0){
-    el.innerHTML = '<p class="muted">Your cart is empty</p>';
-    updateCartBadge();
+  const cart = getCart();
+
+  if (cart.length === 0){
+    list.innerHTML = `<p class="muted">Your cart is empty</p>`;
     return;
   }
 
-  el.innerHTML = c.map((i, idx) => `
-    <div class="cart-item fade-in">
-      <img src="${i.img}" onerror="this.src='default.jpg'">
-      <div style="flex:1">
-        <div style="font-weight:700">${i.name}</div>
-        <div class="muted">
-          RM ${i.price} • Qty:
-          <input type="number" min="1" value="${i.qty}" data-idx="${idx}" style="width:60px">
+  list.innerHTML = cart
+    .map(
+      (i, idx) => `
+      <div class="cart-item fade-in">
+        <img src="${i.img}">
+        <div style="flex:1">
+          <div style="font-weight:700">${i.name}</div>
+          <div class="muted">
+            RM ${i.price} • Qty: 
+            <input type="number" min="1" value="${i.qty}" data-idx="${idx}" style="width:60px">
+          </div>
+        </div>
+
+        <div>
+          RM ${(i.qty * i.price).toFixed(2)}
+          <br>
+          <button onclick="removeItem(${idx})">Remove</button>
         </div>
       </div>
-      <div>
-        RM ${(i.price * i.qty).toFixed(2)}
-        <br><button onclick="removeItem(${idx})">Remove</button>
-      </div>
-    </div>
-  `).join('');
+    `
+    )
+    .join("");
 
-  document.querySelectorAll('#cart-list input').forEach(n => {
-    n.onchange = e => {
-      const c = getCart();
-      c[e.target.dataset.idx].qty = Number(e.target.value);
-      saveCart(c);
+  document.querySelectorAll("#cart-list input").forEach(input => {
+    input.onchange = e => {
+      const cart = getCart();
+      cart[e.target.dataset.idx].qty = Number(e.target.value);
+      saveCart(cart);
       renderCart();
-    }
+    };
   });
 
-  updateCartBadge();
-}
-
-function removeItem(i){
-  const c = getCart();
-  c.splice(i,1);
-  saveCart(c);
-  renderCart();
-}
-
-
-// ===============================
-// CHECKOUT
-// ===============================
-function goToCheckout(){
-  document.getElementById('checkout').style.display = 'block';
   renderOrderSummary();
 }
 
-function renderOrderSummary(){
-  const c = getCart();
-  const el = document.getElementById('order-summary');
-  let t = 0;
-
-  el.innerHTML = c.map(i => {
-    t += i.qty * i.price;
-    return `
-      <div style="display:flex;justify-content:space-between">
-        <div>${i.name} x${i.qty}</div>
-        <div>RM ${(i.qty*i.price).toFixed(2)}</div>
-      </div>
-    `;
-  }).join('') +
-  `<hr><div style="display:flex;justify-content:space-between;font-weight:800">
-    <div>Total</div><div>RM ${t.toFixed(2)}</div>
-  </div>`;
-}
-
-
-// ===============================
-// ORDER PAYMENT
-// ===============================
-function simulatePayment(){
-  const f = document.getElementById('checkout-form');
-
-  if (!f.checkValidity()) return alert('Fill all fields');
-
-  const c = getCart();
-  if (!c.length) return alert('Cart empty');
-
-  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-  const id = Date.now();
-
-  orders.push({
-    id,
-    items: c,
-    name: f.name.value,
-    phone: f.phone.value,
-    address: f.address.value
-  });
-
-  localStorage.setItem('orders', JSON.stringify(orders));
-  localStorage.removeItem('cart');
-
-  showToast("Order placed successfully! ✓");
-
-  renderOrders();
+/* REMOVE ITEM */
+function removeItem(i){
+  const cart = getCart();
+  cart.splice(i, 1);
+  saveCart(cart);
   renderCart();
+  showToast("Item removed");
 }
 
+/* -------------------------------------------------
+   CHECKOUT SUMMARY
+--------------------------------------------------*/
+function renderOrderSummary(){
+  const box = document.getElementById("order-summary");
+  if (!box) return;
 
-// ===============================
-// RENDER ORDERS
-// ===============================
-function renderOrders(){
-  const o = JSON.parse(localStorage.getItem('orders') || '[]');
-  const el = document.getElementById('orders-list');
+  const cart = getCart();
+  let total = 0;
 
-  if(!o.length){
-    el.innerHTML = 'No orders yet';
+  box.innerHTML = cart
+    .map(i => {
+      total += i.qty * i.price;
+      return `
+        <div style="display:flex;justify-content:space-between">
+          <div>${i.name} x${i.qty}</div>
+          <div>RM ${(i.qty * i.price).toFixed(2)}</div>
+        </div>
+      `;
+    })
+    .join("") +
+    `
+    <hr>
+    <div style="display:flex;justify-content:space-between;font-weight:800">
+      <div>Total</div>
+      <div>RM ${total.toFixed(2)}</div>
+    </div>
+    `;
+}
+
+/* -------------------------------------------------
+   CHECKOUT PROCESS
+--------------------------------------------------*/
+function simulatePayment(){
+  const form = document.getElementById("checkout-form");
+  if (!form) return;
+
+  if (!form.checkValidity()){
+    alert("Fill all fields");
     return;
   }
 
-  el.innerHTML = o.map(x => `
-    <div class="fade-in" style="padding:8px;background:#faf6f3;border-radius:8px;margin-bottom:8px">
-      <div style="font-weight:700">Order ${x.id}</div>
-      <div>Name: ${x.name}</div>
-      <div>Items: ${x.items.map(i => i.name + ' x' + i.qty).join(', ')}</div>
-    </div>
-  `).join('');
+  const cart = getCart();
+  if (!cart.length){
+    alert("Cart empty");
+    return;
+  }
+
+  const allOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+  const id = Date.now();
+
+  allOrders.push({
+    id,
+    items: cart,
+    name: form.name.value,
+    phone: form.phone.value,
+    address: form.address.value,
+  });
+
+  localStorage.setItem("orders", JSON.stringify(allOrders));
+  localStorage.removeItem("cart");
+
+  renderCart();
+  renderOrderSummary();
+  showToast("Order placed successfully!");
 }
 
+/* -------------------------------------------------
+   ADMIN PAGE
+--------------------------------------------------*/
+function renderOrders(){
+  const box = document.getElementById("orders-list");
+  if (!box) return;
 
-// ===============================
-// NICE TOAST ALERT
-// ===============================
+  const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+
+  if (!orders.length){
+    box.innerHTML = "No orders yet";
+    return;
+  }
+
+  box.innerHTML = orders
+    .map(
+      o => `
+      <div style="padding:8px;background:#faf6f3;border-radius:8px;margin-bottom:8px">
+        <div style="font-weight:700">Order ${o.id}</div>
+        <div>Name: ${o.name}</div>
+        <div>Items: ${o.items.map(i => i.name + " x" + i.qty).join(", ")}</div>
+      </div>
+    `
+    )
+    .join("");
+}
+
+/* ADMIN - Add Product */
+document.addEventListener("submit", e => {
+  if (e.target.id === "admin-add-form"){
+    e.preventDefault();
+
+    const f = e.target;
+
+    const newProduct = {
+      id: products.length + 1,
+      name: f.name.value,
+      price: Number(f.price.value),
+      qty: Number(f.qty.value),
+      desc: f.desc.value,
+      img: f.img.value || "default.jpg"
+    };
+
+    products.push(newProduct);
+    renderProducts();
+    f.reset();
+    showToast("Product added!");
+  }
+});
+
+/* -------------------------------------------------
+   TOAST SYSTEM
+--------------------------------------------------*/
 function showToast(msg){
-  const t = document.createElement("div");
-  t.className = "toast";
+  let t = document.createElement("div");
+  t.className = "toast show";
   t.innerText = msg;
   document.body.appendChild(t);
-  setTimeout(()=> t.classList.add("show"), 10);
-  setTimeout(()=> t.remove(), 3500);
+
+  setTimeout(() => {
+    t.style.opacity = "0";
+    setTimeout(() => t.remove(), 300);
+  }, 1800);
 }
 
-
-// ===============================
-// INIT
-// ===============================
-renderProducts();
-renderCart();
-renderOrders();
-updateCartBadge();
+/* -------------------------------------------------
+   AUTO INITIALIZE BASED ON PAGE
+--------------------------------------------------*/
+window.onload = () => {
+  renderProducts();
+  renderCart();
+  renderOrders();
+};
