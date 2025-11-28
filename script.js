@@ -1,33 +1,3 @@
-/* -------------------------------------------------
-   NEW FEATURE 1: Loading Screen
--------------------------------------------------- */
-window.onload = () => {
-  setTimeout(() => {
-    const loader = document.getElementById("loader");
-    if (loader) loader.style.display = "none";
-  }, 1500);
-};
-
-/* -------------------------------------------------
-   NEW FEATURE 2: Add-to-Cart Popup Animation
--------------------------------------------------- */
-function showPopup(msg) {
-  let pop = document.createElement("div");
-  pop.className = "popup-alert";
-  pop.innerHTML = msg;
-
-  document.body.appendChild(pop);
-
-  setTimeout(() => pop.style.opacity = "1", 10);
-  setTimeout(() => {
-    pop.style.opacity = "0";
-    setTimeout(() => pop.remove(), 400);
-  }, 1200);
-}
-
-/* -------------------------------------------------
-   PRODUCTS LIST
--------------------------------------------------- */
 const products = [
   { id:1, slug:"biskut-mazola", name:"Biskut Mazola", price:25, qty:25, desc:"Traditional Biskut Mazola — crunchy and rich.", img:"Biskut Mazola.jpg" },
   { id:2, slug:"cornflakes-cookies", name:"Cornflakes Cookies", price:25, qty:33, desc:"Crunchy and sweet.", img:"Cornflakes Cookies.jpg" },
@@ -39,16 +9,10 @@ const products = [
   { id:8, slug:"bright-eyed-susan", name:"Bright Eyed Susan", price:25, qty:20, desc:"Unique and buttery.", img:"Bright Eyed Susan.jpg" }
 ];
 
-/* -------------------------------------------------
-   SMOOTH SCROLL
--------------------------------------------------- */
 function scrollToSection(id){
   document.getElementById(id).scrollIntoView({ behavior:'smooth' });
 }
 
-/* -------------------------------------------------
-   RENDER PRODUCT GRID
--------------------------------------------------- */
 function renderProducts(){
   document.getElementById('product-grid').innerHTML = products.map(p => `
     <div class="card">
@@ -66,9 +30,6 @@ function renderProducts(){
   `).join('');
 }
 
-/* -------------------------------------------------
-   PRODUCT DETAIL VIEW
--------------------------------------------------- */
 function viewProduct(id){
   const p = products.find(x => x.id === id);
   document.getElementById('detail-area').style.display = 'block';
@@ -86,9 +47,6 @@ function viewProduct(id){
     </div>`;
 }
 
-/* -------------------------------------------------
-   CART FUNCTIONS
--------------------------------------------------- */
 function getCart(){ return JSON.parse(localStorage.getItem('cart') || '[]'); }
 function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
 
@@ -102,7 +60,7 @@ function addToCart(id){
 
   saveCart(c);
   renderCart();
-  showPopup("Added to cart! 🎉");
+  alert('Added to cart');
 }
 
 function renderCart(){
@@ -145,12 +103,9 @@ function removeItem(i){
   const c = getCart();
   c.splice(i,1);
   saveCart(c);
-  renderCart();
+ renderCart();
 }
 
-/* -------------------------------------------------
-   CHECKOUT & ORDERS
--------------------------------------------------- */
 function goToCheckout(){
   document.getElementById('checkout').style.display = 'block';
   renderOrderSummary();
@@ -179,6 +134,7 @@ function simulatePayment(){
   const f = document.getElementById('checkout-form');
 
   if (!f.checkValidity()) return alert('Fill all fields');
+
   const c = getCart();
   if (!c.length) return alert('Cart empty');
 
@@ -220,9 +176,6 @@ function renderOrders(){
   `).join('');
 }
 
-/* -------------------------------------------------
-   ADMIN ADD PRODUCT
--------------------------------------------------- */
 document.addEventListener('submit', e => {
   if(e.target.id === 'admin-add-form'){
     e.preventDefault();
@@ -241,13 +194,10 @@ document.addEventListener('submit', e => {
     products.push(obj);
     renderProducts();
     f.reset();
-    showPopup("Product added!");
+    alert('Product added');
   }
 });
 
-/* -------------------------------------------------
-   INITIAL RENDER
--------------------------------------------------- */
 renderProducts();
 renderCart();
 renderOrders();
