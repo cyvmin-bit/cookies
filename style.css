@@ -7,7 +7,7 @@
 
 /* Background image + transparent overlay */
 body {
-    background-image: url("https://tse1.mm.bing.net/th/id/OIP.lKiRQBKuZDh7LWDPZS1EjgHaEu?rs=1&pid=ImgDetMain&o=7&rm=3");
+    background-image: url("background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
