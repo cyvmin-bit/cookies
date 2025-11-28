@@ -1,3 +1,6 @@
+// ===============================
+// PRODUCT DATA
+// ===============================
 const products = [
   { id:1, slug:"biskut-mazola", name:"Biskut Mazola", price:25, qty:25, desc:"Traditional Biskut Mazola — crunchy and rich.", img:"Biskut Mazola.jpg" },
   { id:2, slug:"cornflakes-cookies", name:"Cornflakes Cookies", price:25, qty:33, desc:"Crunchy and sweet.", img:"Cornflakes Cookies.jpg" },
@@ -9,14 +12,25 @@ const products = [
   { id:8, slug:"bright-eyed-susan", name:"Bright Eyed Susan", price:25, qty:20, desc:"Unique and buttery.", img:"Bright Eyed Susan.jpg" }
 ];
 
+
+// ===============================
+// SMOOTH SCROLL
+// ===============================
 function scrollToSection(id){
   document.getElementById(id).scrollIntoView({ behavior:'smooth' });
 }
 
+
+// ===============================
+// RENDER PRODUCTS (with fade-in animation + img fallback)
+// ===============================
 function renderProducts(){
-  document.getElementById('product-grid').innerHTML = products.map(p => `
-    <div class="card">
-      <img class="thumb" src="${p.img}" alt="${p.name}">
+  const grid = document.getElementById('product-grid');
+
+  grid.innerHTML = products.map(p => `
+    <div class="card fade-in">
+      <img class="thumb" src="${p.img}" alt="${p.name}"
+        onerror="this.src='default.jpg'">
       <div class="card-body">
         <div class="card-title">${p.name}</div>
         <div class="price">RM ${p.price.toFixed(2)}</div>
@@ -30,13 +44,22 @@ function renderProducts(){
   `).join('');
 }
 
+
+// ===============================
+// PRODUCT DETAIL
+// ===============================
 function viewProduct(id){
   const p = products.find(x => x.id === id);
-  document.getElementById('detail-area').style.display = 'block';
+  const detail = document.getElementById('detail-area');
+
+  detail.style.display = 'block';
+  detail.scrollIntoView({ behavior: "smooth" });
 
   document.getElementById('product-detail').innerHTML = `
     <div class="left">
-      <img src="${p.img}" style="width:100%;border-radius:10px;height:360px;object-fit:cover">
+      <img src="${p.img}" 
+           onerror="this.src='default.jpg'"
+           style="width:100%;border-radius:10px;height:360px;object-fit:cover">
       <h2 style="margin-top:12px">${p.name}</h2>
       <p class="muted" style="margin-top:8px">${p.desc}</p>
     </div>
@@ -47,8 +70,18 @@ function viewProduct(id){
     </div>`;
 }
 
+
+// ===============================
+// CART FUNCTIONS
+// ===============================
 function getCart(){ return JSON.parse(localStorage.getItem('cart') || '[]'); }
 function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
+
+function updateCartBadge(){
+  const badge = document.getElementById("cart-count");
+  const count = getCart().reduce((a,b)=>a+b.qty,0);
+  if(badge) badge.innerText = count;
+}
 
 function addToCart(id){
   const p = products.find(x => x.id === id);
@@ -59,8 +92,11 @@ function addToCart(id){
   else c.push({...p, qty: 1});
 
   saveCart(c);
+  updateCartBadge();
   renderCart();
-  alert('Added to cart');
+
+  // prettier alert UI
+  showToast(`${p.name} added to cart`);
 }
 
 function renderCart(){
@@ -69,12 +105,13 @@ function renderCart(){
 
   if(c.length === 0){
     el.innerHTML = '<p class="muted">Your cart is empty</p>';
+    updateCartBadge();
     return;
   }
 
   el.innerHTML = c.map((i, idx) => `
-    <div class="cart-item">
-      <img src="${i.img}">
+    <div class="cart-item fade-in">
+      <img src="${i.img}" onerror="this.src='default.jpg'">
       <div style="flex:1">
         <div style="font-weight:700">${i.name}</div>
         <div class="muted">
@@ -97,15 +134,21 @@ function renderCart(){
       renderCart();
     }
   });
+
+  updateCartBadge();
 }
 
 function removeItem(i){
   const c = getCart();
   c.splice(i,1);
   saveCart(c);
- renderCart();
+  renderCart();
 }
 
+
+// ===============================
+// CHECKOUT
+// ===============================
 function goToCheckout(){
   document.getElementById('checkout').style.display = 'block';
   renderOrderSummary();
@@ -130,6 +173,10 @@ function renderOrderSummary(){
   </div>`;
 }
 
+
+// ===============================
+// ORDER PAYMENT
+// ===============================
 function simulatePayment(){
   const f = document.getElementById('checkout-form');
 
@@ -152,12 +199,16 @@ function simulatePayment(){
   localStorage.setItem('orders', JSON.stringify(orders));
   localStorage.removeItem('cart');
 
-  alert('Order placed: ' + id);
+  showToast("Order placed successfully! ✓");
 
   renderOrders();
   renderCart();
 }
 
+
+// ===============================
+// RENDER ORDERS
+// ===============================
 function renderOrders(){
   const o = JSON.parse(localStorage.getItem('orders') || '[]');
   const el = document.getElementById('orders-list');
@@ -168,7 +219,7 @@ function renderOrders(){
   }
 
   el.innerHTML = o.map(x => `
-    <div style="padding:8px;background:#faf6f3;border-radius:8px;margin-bottom:8px">
+    <div class="fade-in" style="padding:8px;background:#faf6f3;border-radius:8px;margin-bottom:8px">
       <div style="font-weight:700">Order ${x.id}</div>
       <div>Name: ${x.name}</div>
       <div>Items: ${x.items.map(i => i.name + ' x' + i.qty).join(', ')}</div>
@@ -176,28 +227,24 @@ function renderOrders(){
   `).join('');
 }
 
-document.addEventListener('submit', e => {
-  if(e.target.id === 'admin-add-form'){
-    e.preventDefault();
 
-    const f = e.target;
+// ===============================
+// NICE TOAST ALERT
+// ===============================
+function showToast(msg){
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.innerText = msg;
+  document.body.appendChild(t);
+  setTimeout(()=> t.classList.add("show"), 10);
+  setTimeout(()=> t.remove(), 3500);
+}
 
-    const obj = {
-      id: products.length+1,
-      name: f.name.value,
-      price: Number(f.price.value),
-      qty: Number(f.qty.value),
-      desc: f.desc.value,
-      img: f.img.value || 'default.jpg'
-    };
 
-    products.push(obj);
-    renderProducts();
-    f.reset();
-    alert('Product added');
-  }
-});
-
+// ===============================
+// INIT
+// ===============================
 renderProducts();
 renderCart();
 renderOrders();
+updateCartBadge();
