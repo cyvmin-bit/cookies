@@ -23,9 +23,9 @@ function scrollToSection(id){
 /* -------------------------------------------------
    PRODUCT RENDERING (Products Page Only)
 --------------------------------------------------*/
-function renderProducts(){
-  const grid = document.getElementById("product-grid");
-  if (!grid) return; // Page doesn't have product grid
+function renderProducts() {
+  const grid = document.getElementById("product-list"); // FIXED ID
+  if (!grid) return;
 
   grid.innerHTML = products
     .map(
@@ -47,6 +47,7 @@ function renderProducts(){
     )
     .join("");
 }
+
 
 /* -------------------------------------------------
    PRODUCT DETAILS (Products Page Only)
