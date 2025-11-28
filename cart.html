@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart – RinErin Cookies</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="container">
+    <a href="index.html" class="logo">RinErin Cookies</a>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="product.html">Products</a>
+      <a href="cart.html">Cart</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Your Cart</h2>
+
+    <!-- CART LIST -->
+    <div id="cart-list" style="margin-top:12px"></div>
+
+    <!-- CHECKOUT SECTION -->
+    <h2 style="margin-top:30px;">Checkout</h2>
+
+    <div class="checkout-wrap">
+      <!-- LEFT SIDE -->
+      <div class="checkout-left">
+        <form id="checkout-form">
+          <label>Full Name</label>
+          <input name="name" required>
+
+          <label>Phone</label>
+          <input name="phone" required>
+
+          <label>Address</label>
+          <textarea name="address" rows="3" required></textarea>
+        </form>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="checkout-right">
+        <h4>Order Summary</h4>
+        <div id="order-summary"></div>
+
+        <div style="margin-top:12px">
+          <button class="btn" onclick="simulatePayment()">Simulate Payment</button>
+        </div>
+      </div>
+    </div>
+
+    <footer style="margin-top:40px;">
+      <p class="muted">© 2025 RinErin Cookies</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
