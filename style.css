@@ -12,7 +12,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     min-height: 100vh;
-    color: #222;
+    color: #fff;
     position: relative; /* needed for overlay positioning */
 }
 
