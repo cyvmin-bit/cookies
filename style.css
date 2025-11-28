@@ -63,9 +63,28 @@ nav a:hover {
     background: #efeae7;
 }
 
+/* Common “box background” style — soft, warm tan/orange color */
+:root {
+    --box-bg: rgba(245, 220, 185, 0.95); /* light warm tan */
+    --box-bg-gradient-start: rgb(245, 220, 185);
+    --box-bg-gradient-end: rgb(225, 200, 160);
+}
+
+/* Function to apply box background or gradient */
+.box-style {
+    background: var(--box-bg);
+    border-radius: 12px;
+}
+
+/* If you want gradient instead: */
+/* .box-style-gradient {
+    background: linear-gradient(135deg, var(--box-bg-gradient-start), var(--box-bg-gradient-end));
+    border-radius: 12px;
+} */
+
 /* Hero section */
 .hero {
-    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
+    background: var(--box-bg);
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -110,7 +129,7 @@ nav a:hover {
 }
 
 .card {
-    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
+    background: var(--box-bg);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
@@ -156,7 +175,7 @@ nav a:hover {
 
 .detail .right {
     width: 320px;
-    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
+    background: var(--box-bg);
     padding: 16px;
     border-radius: 12px;
 }
@@ -167,7 +186,7 @@ nav a:hover {
     gap: 12px;
     align-items: center;
     padding: 10px;
-    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
+    background: var(--box-bg);
     border-radius: 10px;
     margin-bottom: 10px;
 }
@@ -187,14 +206,14 @@ nav a:hover {
 
 .admin-side {
     width: 220px;
-    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
+    background: var(--box-bg);
     padding: 12px;
     border-radius: 10px;
 }
 
 .admin-main {
     flex: 1;
-    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
+    background: var(--box-bg);
     padding: 12px;
     border-radius: 10px;
 }
