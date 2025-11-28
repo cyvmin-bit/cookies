@@ -4,10 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RinErin Cookies</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+  <!-- Loading Animation -->
+  <div id="loader">
+    <div class="cookie-loader"></div>
+    <p>Fresh cookies loading...</p>
+  </div>
+
   <!-- Navigation -->
   <header>
     <nav class="navbar">
@@ -24,35 +39,43 @@
   <!-- Hero Section -->
   <section id="home" class="hero">
     <div class="hero-content">
-      <h2>Freshly Baked Happiness</h2>
-      <p>Crunchy, chewy, and made with love — just for you.</p>
-      <a href="#products" class="btn">Explore Cookies</a>
+      <h2>Your Favourite Homemade Cookies</h2>
+      <p>Crunchy, chewy & baked with love — just for you.</p>
+      <a href="#products" class="btn">Shop Now</a>
     </div>
     <img src="hero-photo.jpg" class="hero-img">
   </section>
 
-  <!-- Product Section -->
+  <!-- Products Section -->
   <section id="products" class="products">
-    <h2>Our Best Sellers</h2>
+    <h2>Best Sellers</h2>
 
     <div class="product-grid">
+
       <div class="product-card">
-        <img src="cookie1.jpg" />
+        <img src="cookie1.jpg" alt="">
         <h3>Chocolate Chip</h3>
-        <p>Chewy, sweet, and full of chocolate chunks.</p>
+        <p class="price">RM 12 / pack</p>
+        <p>Soft, chewy & full of chocolate chunks.</p>
+        <button class="add-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="cookie2.jpg" />
+        <img src="cookie2.jpg" alt="">
         <h3>Matcha Green Tea</h3>
-        <p>A unique taste with premium Japanese matcha.</p>
+        <p class="price">RM 15 / pack</p>
+        <p>Premium Japanese matcha with white chocolate.</p>
+        <button class="add-btn">Add to Cart</button>
       </div>
 
       <div class="product-card">
-        <img src="cookie3.jpg" />
+        <img src="cookie3.jpg" alt="">
         <h3>Red Velvet</h3>
-        <p>Soft, buttery, and topped with white choco chips.</p>
+        <p class="price">RM 14 / pack</p>
+        <p>Soft buttery flavour topped with white chips.</p>
+        <button class="add-btn">Add to Cart</button>
       </div>
+
     </div>
   </section>
 
@@ -60,21 +83,28 @@
   <section id="about" class="about">
     <h2>About Us</h2>
     <p>
-      RinErin Cookies is a small homemade bakery that focuses on delivering
-      freshly baked cookies made with quality ingredients. Every batch is
-      created with care to ensure only the best flavor in every bite.
+      RinErin Cookies is a homemade bakery dedicated to crafting delicious,
+      freshly baked cookies using high-quality ingredients.
     </p>
   </section>
 
   <!-- Contact -->
   <section id="contact" class="contact">
-    <h2>Get In Touch</h2>
-    <p>For orders, DM us on Instagram:</p>
-    <a href="https://instagram.com" class="btn">Message Us</a>
+    <h2>Contact Us</h2>
+    <p>Order now through WhatsApp or Instagram!</p>
+    <a href="https://wa.me/60123456789" class="btn">WhatsApp</a>
   </section>
 
   <footer>
-    <p>© 2024 RinErin Cookies • Homemade with Love</p>
+    <p>© 2024 RinErin Cookies • Baked With Love</p>
   </footer>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/60123456789" class="float-whatsapp">
+    <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png">
+  </a>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
 </body>
 </html>
