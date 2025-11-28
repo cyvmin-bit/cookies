@@ -65,7 +65,7 @@ nav a:hover {
 
 /* Hero section */
 .hero {
-    background: rgba(222, 188, 160, 0.95); /* Soft brown */
+    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -110,7 +110,7 @@ nav a:hover {
 }
 
 .card {
-    background: rgba(222, 188, 160, 0.95); /* Soft brown */
+    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
@@ -156,7 +156,7 @@ nav a:hover {
 
 .detail .right {
     width: 320px;
-    background: rgba(222, 188, 160, 0.95); /* Soft brown */
+    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
     padding: 16px;
     border-radius: 12px;
 }
@@ -167,7 +167,7 @@ nav a:hover {
     gap: 12px;
     align-items: center;
     padding: 10px;
-    background: rgba(222, 188, 160, 0.95); /* Soft brown */
+    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
     border-radius: 10px;
     margin-bottom: 10px;
 }
@@ -187,14 +187,14 @@ nav a:hover {
 
 .admin-side {
     width: 220px;
-    background: rgba(222, 188, 160, 0.95); /* Soft brown */
+    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
     padding: 12px;
     border-radius: 10px;
 }
 
 .admin-main {
     flex: 1;
-    background: rgba(222, 188, 160, 0.95); /* Soft brown */
+    background: linear-gradient(135deg, #FFD8A8, #FFB347); /* soft gradient orange */
     padding: 12px;
     border-radius: 10px;
 }
