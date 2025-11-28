@@ -1,250 +1,145 @@
-// ===============================
-// PRODUCT DATA
-// ===============================
-const products = [
-  { id:1, slug:"biskut-mazola", name:"Biskut Mazola", price:25, qty:25, desc:"Traditional Biskut Mazola — crunchy and rich.", img:"Biskut Mazola.jpg" },
-  { id:2, slug:"cornflakes-cookies", name:"Cornflakes Cookies", price:25, qty:33, desc:"Crunchy and sweet.", img:"Cornflakes Cookies.jpg" },
-  { id:3, slug:"chocolate-chips", name:"Chocolate Chips", price:25, qty:20, desc:"Classic chocolate chip cookies.", img:"Chocolate Chips.jpg" },
-  { id:4, slug:"london-almond", name:"London Almond", price:28, qty:30, desc:"Premium almond cookies.", img:"London Almond.jpg" },
-  { id:5, slug:"red-velvet", name:"Red Velvet", price:28, qty:28, desc:"Soft red velvet cookies.", img:"Red Velvet.jpg" },
-  { id:6, slug:"suji-badam", name:"Suji Badam", price:20, qty:40, desc:"Traditional suji almond cookies.", img:"Suji Badam.jpg" },
-  { id:7, slug:"tart-nenas", name:"Tart Nenas", price:22, qty:50, desc:"Pineapple tart cookies.", img:"Tart Nenas.jpg" },
-  { id:8, slug:"bright-eyed-susan", name:"Bright Eyed Susan", price:25, qty:20, desc:"Unique and buttery.", img:"Bright Eyed Susan.jpg" }
-];
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RinErin Cookies — Prototype</title>
 
+  <!-- LINK CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
 
-// ===============================
-// SMOOTH SCROLL
-// ===============================
-function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({ behavior:'smooth' });
-}
+<body>
+<div class="container">
+  <header>
+    <a class="logo" href="#">RinErin Cookies</a>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#products">Products</a>
+      <a href="#cart">Cart</a>
+      <a href="#admin">Admin</a>
+    </nav>
+  </header>
 
-
-// ===============================
-// RENDER PRODUCTS (with fade-in animation + img fallback)
-// ===============================
-function renderProducts(){
-  const grid = document.getElementById('product-grid');
-
-  grid.innerHTML = products.map(p => `
-    <div class="card fade-in">
-      <img class="thumb" src="${p.img}" alt="${p.name}"
-        onerror="this.src='default.jpg'">
-      <div class="card-body">
-        <div class="card-title">${p.name}</div>
-        <div class="price">RM ${p.price.toFixed(2)}</div>
-        <div class="meta">(${p.qty} pcs)</div>
-        <div style="margin-top:8px">
-          <button class="pill" onclick="viewProduct(${p.id})">View</button>
-          <button class="pill" onclick="addToCart(${p.id})">Add</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-
-// ===============================
-// PRODUCT DETAIL
-// ===============================
-function viewProduct(id){
-  const p = products.find(x => x.id === id);
-  const detail = document.getElementById('detail-area');
-
-  detail.style.display = 'block';
-  detail.scrollIntoView({ behavior: "smooth" });
-
-  document.getElementById('product-detail').innerHTML = `
+  <!-- HERO -->
+  <section class="hero" id="home">
     <div class="left">
-      <img src="${p.img}" 
-           onerror="this.src='default.jpg'"
-           style="width:100%;border-radius:10px;height:360px;object-fit:cover">
-      <h2 style="margin-top:12px">${p.name}</h2>
-      <p class="muted" style="margin-top:8px">${p.desc}</p>
+      <h1>Homemade Cookies & Treats — Freshly Baked</h1>
+      <p>Order from our selection of 8 signature cookie packs — perfect for gifts, events, or a sweet treat at home.</p>
+      <div class="cta">
+        <button class="btn" onclick="scrollToSection('products')">Shop Now</button>
+      </div>
     </div>
-    <div class="right">
-      <div style="font-size:1.2rem;font-weight:800">RM ${p.price.toFixed(2)}</div>
-      <div class="muted">(${p.qty} pcs)</div>
-      <div style="margin-top:12px"><button class="btn" onclick="addToCart(${p.id})">Add to cart</button></div>
-    </div>`;
-}
 
+    <div class="right" style="width:360px;">
+      <img src="hero-photo.jpg" alt="Hero Image" class="hero-img">
+      <div class="muted" style="margin-top:8px;text-align:center">Hero Image</div>
+    </div>
+  </section>
 
-// ===============================
-// CART FUNCTIONS
-// ===============================
-function getCart(){ return JSON.parse(localStorage.getItem('cart') || '[]'); }
-function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
+  <!-- PRODUCTS -->
+  <section id="products" style="margin-top:20px">
+    <h2>Our Products</h2>
+    <div class="grid" id="product-grid"></div>
+  </section>
 
-function updateCartBadge(){
-  const badge = document.getElementById("cart-count");
-  const count = getCart().reduce((a,b)=>a+b.qty,0);
-  if(badge) badge.innerText = count;
-}
+  <!-- PRODUCT DETAIL -->
+  <section id="detail-area" style="display:none;margin-top:20px">
+    <a href="#products" class="back-link">← Back to products</a>
+    <div id="product-detail" class="detail"></div>
+  </section>
 
-function addToCart(id){
-  const p = products.find(x => x.id === id);
-  const c = getCart();
-  const ex = c.find(i => i.id === id);
+  <!-- CART -->
+  <section id="cart" style="margin-top:20px">
+    <h2>Your Cart</h2>
+    <div id="cart-list"></div>
+    <div style="margin-top:12px">
+      <button class="btn" onclick="goToCheckout()">Proceed to Checkout</button>
+    </div>
+  </section>
 
-  if(ex) ex.qty++;
-  else c.push({...p, qty: 1});
+  <!-- CHECKOUT -->
+  <section id="checkout" style="display:none;margin-top:20px">
+    <h2>Checkout</h2>
+    <div class="checkout-wrap">
+      <div class="checkout-left">
+        <form id="checkout-form">
+          <label>Full name</label>
+          <input name="name" required>
 
-  saveCart(c);
-  updateCartBadge();
-  renderCart();
+          <label>Phone</label>
+          <input name="phone" required>
 
-  // prettier alert UI
-  showToast(`${p.name} added to cart`);
-}
+          <label>Address</label>
+          <textarea name="address" rows="3" required></textarea>
+        </form>
+      </div>
 
-function renderCart(){
-  const c = getCart();
-  const el = document.getElementById('cart-list');
+      <div class="checkout-right">
+        <h4>Order summary</h4>
+        <div id="order-summary"></div>
+        <div style="margin-top:12px"><button class="btn" onclick="simulatePayment()">Simulate Payment</button></div>
+      </div>
+    </div>
+  </section>
 
-  if(c.length === 0){
-    el.innerHTML = '<p class="muted">Your cart is empty</p>';
-    updateCartBadge();
-    return;
-  }
+  <!-- ADMIN -->
+  <section id="admin" style="margin-top:20px">
+    <h2>Admin Panel</h2>
+    <div class="admin-wrap">
 
-  el.innerHTML = c.map((i, idx) => `
-    <div class="cart-item fade-in">
-      <img src="${i.img}" onerror="this.src='default.jpg'">
-      <div style="flex:1">
-        <div style="font-weight:700">${i.name}</div>
-        <div class="muted">
-          RM ${i.price} • Qty:
-          <input type="number" min="1" value="${i.qty}" data-idx="${idx}" style="width:60px">
+      <aside class="admin-side">
+        <div class="admin-title">Admin</div>
+        <div class="muted">Client-side demo</div>
+        <hr class="divider">
+        <nav class="admin-nav">
+          <a href="#add">Add product</a>
+          <a href="#orders">Orders</a>
+        </nav>
+      </aside>
+
+      <div class="admin-main">
+
+        <div id="add" class="admin-box">
+          <h3>Add Product</h3>
+          <form id="admin-add-form">
+            <label>Product name</label>
+            <input name="name" required>
+
+            <label>Price (RM)</label>
+            <input name="price" type="number" step="0.01" required>
+
+            <label>Quantity (pcs)</label>
+            <input name="qty" type="number" value="30">
+
+            <label>Description</label>
+            <textarea name="desc" rows="3"></textarea>
+
+            <label>Image filename</label>
+            <input name="img" placeholder="example: cookies1.jpg">
+
+            <div style="margin-top:10px">
+              <button class="btn" type="submit">Add</button>
+            </div>
+          </form>
         </div>
-      </div>
-      <div>
-        RM ${(i.price * i.qty).toFixed(2)}
-        <br><button onclick="removeItem(${idx})">Remove</button>
+
+        <div id="orders" class="admin-box" style="margin-top:12px">
+          <h3>Orders</h3>
+          <div id="orders-list" class="muted">No orders yet</div>
+        </div>
+
       </div>
     </div>
-  `).join('');
+  </section>
 
-  document.querySelectorAll('#cart-list input').forEach(n => {
-    n.onchange = e => {
-      const c = getCart();
-      c[e.target.dataset.idx].qty = Number(e.target.value);
-      saveCart(c);
-      renderCart();
-    }
-  });
+  <footer>
+    Demo prototype • Contact: 016-2220482
+  </footer>
+</div>
 
-  updateCartBadge();
-}
+<!-- LINK JS -->
+<script src="script.js"></script>
 
-function removeItem(i){
-  const c = getCart();
-  c.splice(i,1);
-  saveCart(c);
-  renderCart();
-}
-
-
-// ===============================
-// CHECKOUT
-// ===============================
-function goToCheckout(){
-  document.getElementById('checkout').style.display = 'block';
-  renderOrderSummary();
-}
-
-function renderOrderSummary(){
-  const c = getCart();
-  const el = document.getElementById('order-summary');
-  let t = 0;
-
-  el.innerHTML = c.map(i => {
-    t += i.qty * i.price;
-    return `
-      <div style="display:flex;justify-content:space-between">
-        <div>${i.name} x${i.qty}</div>
-        <div>RM ${(i.qty*i.price).toFixed(2)}</div>
-      </div>
-    `;
-  }).join('') +
-  `<hr><div style="display:flex;justify-content:space-between;font-weight:800">
-    <div>Total</div><div>RM ${t.toFixed(2)}</div>
-  </div>`;
-}
-
-
-// ===============================
-// ORDER PAYMENT
-// ===============================
-function simulatePayment(){
-  const f = document.getElementById('checkout-form');
-
-  if (!f.checkValidity()) return alert('Fill all fields');
-
-  const c = getCart();
-  if (!c.length) return alert('Cart empty');
-
-  const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-  const id = Date.now();
-
-  orders.push({
-    id,
-    items: c,
-    name: f.name.value,
-    phone: f.phone.value,
-    address: f.address.value
-  });
-
-  localStorage.setItem('orders', JSON.stringify(orders));
-  localStorage.removeItem('cart');
-
-  showToast("Order placed successfully! ✓");
-
-  renderOrders();
-  renderCart();
-}
-
-
-// ===============================
-// RENDER ORDERS
-// ===============================
-function renderOrders(){
-  const o = JSON.parse(localStorage.getItem('orders') || '[]');
-  const el = document.getElementById('orders-list');
-
-  if(!o.length){
-    el.innerHTML = 'No orders yet';
-    return;
-  }
-
-  el.innerHTML = o.map(x => `
-    <div class="fade-in" style="padding:8px;background:#faf6f3;border-radius:8px;margin-bottom:8px">
-      <div style="font-weight:700">Order ${x.id}</div>
-      <div>Name: ${x.name}</div>
-      <div>Items: ${x.items.map(i => i.name + ' x' + i.qty).join(', ')}</div>
-    </div>
-  `).join('');
-}
-
-
-// ===============================
-// NICE TOAST ALERT
-// ===============================
-function showToast(msg){
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.innerText = msg;
-  document.body.appendChild(t);
-  setTimeout(()=> t.classList.add("show"), 10);
-  setTimeout(()=> t.remove(), 3500);
-}
-
-
-// ===============================
-// INIT
-// ===============================
-renderProducts();
-renderCart();
-renderOrders();
-updateCartBadge();
+</body>
+</html>
